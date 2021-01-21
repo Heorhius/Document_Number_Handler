@@ -1,5 +1,6 @@
 package com.kaptsiug.study.project.controller;
 
+import com.kaptsiug.study.project.exception.IllegalDocumentTypeException;
 import com.kaptsiug.study.project.exception.IllegalStringIndexException;
 import com.kaptsiug.study.project.logic.DocumentHandler;
 import com.kaptsiug.study.project.util.Parser;
@@ -22,7 +23,14 @@ public class Main {
 
         if (parseResults.length != 0) {
             for (int i = 0; i < parseResults.length; i++) {
-                if (Validator.validateDocNumber(parseResults[i])) {
+                boolean isValidateValue = false;
+                try {
+                    isValidateValue = Validator.validateDocNumber(parseResults[i]);
+                } catch (IllegalDocumentTypeException e) {
+                    e.getMessage();
+                    e.printStackTrace();
+                }
+                if (isValidateValue) {
                     String stringWithHiredElements = null;
                     try {
                         stringWithHiredElements = DocumentHandler.hideSomeCharsInDocument(parseResults[i], 5, 7);
